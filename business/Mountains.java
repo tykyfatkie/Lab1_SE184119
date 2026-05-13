@@ -14,7 +14,8 @@ public class Mountains extends ArrayList<Mountain> {
 
     public Mountain get(String mountainCode) {
         for (Mountain m : this) {
-            if (m.getMountainCode().equalsIgnoreCase(mountainCode.trim())) return m;
+            if (m.getMountainCode().equalsIgnoreCase(mountainCode.trim()))
+                return m;
         }
         return null;
     }
@@ -25,12 +26,14 @@ public class Mountains extends ArrayList<Mountain> {
 
     public Mountain dataToObject(String text) {
         String[] parts = text.split(",", 4);
-        if (parts.length < 3) return null;
+        if (parts.length < 3)
+            return null;
         String code = parts[0].trim();
         String name = parts[1].trim();
         String province = parts[2].trim();
         String desc = parts.length == 4 ? parts[3].trim() : "";
-        if (code.isEmpty() || code.equalsIgnoreCase("Code")) return null;
+        if (code.isEmpty() || code.equalsIgnoreCase("Code"))
+            return null;
         return new Mountain(code, name, province, desc);
     }
 
@@ -47,23 +50,32 @@ public class Mountains extends ArrayList<Mountain> {
             String temp = "";
             while ((temp = br.readLine()) != null) {
                 Mountain i = dataToObject(temp);
-                if (i != null) this.add(i);
+                if (i != null)
+                    this.add(i);
             }
             br.close();
         } catch (IOException ex) {
             System.out.println("Error reading mountain file: " + ex.getMessage());
         } finally {
-            if (fr != null) try { fr.close(); } catch (IOException e) {}
+            if (fr != null)
+                try {
+                    fr.close();
+                } catch (IOException e) {
+                }
         }
     }
 
     public void showAll() {
-        System.out.println("|-------------------------------------------------------------------------|");
-        System.out.println("| Code | Mountain Name                  | Province        | Description   |");
-        System.out.println("|-------------------------------------------------------------------------|");
+        System.out.println(
+                "|--------------------------------------------------------------------------------------------------------------------------------|");
+        System.out.println(
+                "| Code  | Mountain Name                  | Province        | Description                                                         |");
+        System.out.println(
+                "|--------------------------------------------------------------------------------------------------------------------------------|");
         for (Mountain m : this) {
             System.out.println("| " + m.toString());
         }
-        System.out.println("|-------------------------------------------------------------------------|");
+        System.out.println(
+                "|--------------------------------------------------------------------------------------------------------------------------------|");
     }
 }

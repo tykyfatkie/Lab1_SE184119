@@ -7,20 +7,23 @@ import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+/**
+ * Class Students quản lý danh sách đăng ký leo núi.
+ * Kế thừa từ ArrayList để tận dụng các phương thức có sẵn.
+ */
 public class Students extends ArrayList<Student> {
-    private String pathFile;
+    private final String pathFile;
     private boolean isSaved;
 
     private static final String HEADER_TABLE = "|-----------------------------------------------------------------------|\n"
-            +
-            "| StudentID  | Name                 | Phone        | PeakCode   | Fee   |\n" +
-            "|-----------------------------------------------------------------------|";
+            + "| StudentID  | Name               | Phone       | PeakCode   | Fee       |\n"
+            + "|-----------------------------------------------------------------------|";
     private static final String FOOTER_TABLE = "|-----------------------------------------------------------------------|";
 
     public Students() {
         this.pathFile = "registrations.dat";
         this.isSaved = true;
-        readFromFile();
+        readFromFile(); // Tự động nạp dữ liệu khi khởi tạo
     }
 
     public boolean isSaved() {
@@ -30,7 +33,8 @@ public class Students extends ArrayList<Student> {
     @Override
     public boolean add(Student x) {
         boolean result = super.add(x);
-        isSaved = false;
+        if (result)
+            isSaved = false;
         return result;
     }
 
@@ -103,65 +107,50 @@ public class Students extends ArrayList<Student> {
             System.out.println("No registration data available.");
             return;
         }
-        Statistics stats = new Statistics(this);
-        stats.show();
+        new Statistics(this).show();
     }
 
+    /**
+     * Nạp toàn bộ đối tượng Student từ file nhị phân vào List.
+     */
     public void readFromFile() {
-        FileInputStream fis = null;
-        try {
-            File f = new File(pathFile);
-            if (!f.exists())
-                return;
-            fis = new FileInputStream(f);
-            ObjectInputStream ois = new ObjectInputStream(fis);
-            while (fis.available() > 0) {
-                Student x = (Student) ois.readObject();
-                super.add(x);
-            }
-            ois.close();
-            this.isSaved = true;
-        } catch (FileNotFoundException ex) {
-            Logger.getLogger(Students.class.getName()).log(Level.SEVERE, null, ex);
-        } catch (IOException ex) {
-            Logger.getLogger(Students.class.getName()).log(Level.SEVERE, null, ex);
-        } catch (ClassNotFoundException ex) {
-            Logger.getLogger(Students.class.getName()).log(Level.SEVERE, null, ex);
-        } catch (Exception ex) {
-            Logger.getLogger(Students.class.getName()).log(Level.SEVERE, null, ex);
-        } finally {
-            if (fis != null)
+        File f = new File(pathFile);
+        if (!f.exists())
+            return;
+
+        try (ObjectInputStream ois = new ObjectInputStream(new FileInputStream(f))) {
+            while (true) {
                 try {
-                    fis.close();
-                } catch (IOException e) {
+                    Student x = (Student) ois.readObject();
+                    super.add(x);
+                } catch (EOFException e) {
+                    break; // Kết thúc file thành công
                 }
+            }
+            this.isSaved = true;
+        } catch (IOException | ClassNotFoundException ex) {
+            Logger.getLogger(Students.class.getName()).log(Level.SEVERE, "Error loading file", ex);
         }
     }
 
+    /**
+     * Ghi toàn bộ danh sách hiện tại xuống file registrations.dat.
+     */
     public void saveToFile() {
-        if (this.isSaved)
+        if (this.isSaved) {
+            System.out.println("No new changes to save.");
             return;
-        FileOutputStream fos = null;
-        try {
-            File f = new File(pathFile);
-            fos = new FileOutputStream(f);
-            ObjectOutputStream oos = new ObjectOutputStream(fos);
+        }
+
+        try (ObjectOutputStream oos = new ObjectOutputStream(new FileOutputStream(pathFile))) {
             for (Student i : this) {
                 oos.writeObject(i);
             }
-            oos.close();
             this.isSaved = true;
             System.out.println("Registration data has been successfully saved to `registrations.dat`.");
-        } catch (FileNotFoundException ex) {
-            Logger.getLogger(Students.class.getName()).log(Level.SEVERE, null, ex);
         } catch (IOException ex) {
+            System.out.println("Error saving file: " + ex.getMessage());
             Logger.getLogger(Students.class.getName()).log(Level.SEVERE, null, ex);
-        } finally {
-            if (fos != null)
-                try {
-                    fos.close();
-                } catch (IOException e) {
-                }
         }
     }
 }
