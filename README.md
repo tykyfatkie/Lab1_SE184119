@@ -1,4 +1,5 @@
 Hê lô mình là Phát và đây là project lab 1 của môn Lab211 kì SU26 do thầy ThongNT dạy =))
+(link repo Github: https://github.com/tykyfatkie/lab211_lab1_su26)
 
 (Lưu ý: Thư mục out/ chứa các file mã máy .class sau khi compile và đã được thiết lập .gitignore nếu cần).
 
