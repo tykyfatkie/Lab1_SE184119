@@ -8,8 +8,6 @@ import tools.Inputter;
 import java.util.List;
 
 public class Main {
-    private static final String[] CAMPUS_CODES = { "CE", "DE", "HE", "SE", "QE" };
-    private static final String[] CAMPUS_NAMES = { "Can Tho", "Da Nang", "Ha Noi", "Ho Chi Minh", "Quy Nhon" };
     private static final double BASE_FEE = 6000000;
     private static final double DISCOUNT_RATE = 0.35;
 
