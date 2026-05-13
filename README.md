@@ -1,4 +1,4 @@
-Hê lô mình là Phát và đây là project lab 1 của môn Lab211 kì SU26 do thầy ThongNT dạy =))
+Hê lô mình là Phát và đây là project lab 1 của môn Lab211 kì SU26 do thầy ThongNT dạy 
 (link repo Github: https://github.com/tykyfatkie/lab211_lab1_su26)
 
 (Lưu ý: Thư mục out/ chứa các file mã máy .class sau khi compile và đã được thiết lập .gitignore nếu cần).
@@ -41,9 +41,4 @@ Lưu trữ: File I/O Streams, Java Serialization (ObjectOutputStream / ObjectInp
 
 with open("README.md", "w", encoding="utf-8") as f:
 f.write(markdown_content)
-
-Tệp Markdown (`README.md`) của bạn đã sẵn sàng
-[file-tag: code-generated-file-0-1778684050233391351]
-
-Mình đã viết xong nội dung file `README.md` dựa theo đúng cấu trúc mã nguồn (tách handler, model, business, tools) và cách hoạt động của hệ thống lưu trữ `.dat` / `.csv` mà chúng ta vừa hoàn thiện. Mình cũng đã thêm luôn thông tin môn học của thầy ThongNT vào phần đầu cho chuẩn bài Lab FPT.
 
