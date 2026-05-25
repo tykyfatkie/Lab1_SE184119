@@ -28,7 +28,7 @@ public class AddRegistration {
         }
 
         // Name
-        String name = ndl.inputWithRetryLimit("Name [2-20 chars]: ", Acceptable.NAME_VALID);
+        String name = ndl.inputWithRetryLimit("Name [2-30 chars]: ", Acceptable.NAME_VALID);
         if (name == null)
             return;
 

@@ -2,7 +2,7 @@ package tools;
 
 public interface Acceptable {
     String STU_ID_VALID = "^[CcDdHhSsQq][Ee]\\d{6}$";
-    String NAME_VALID = "^.{2,20}$";
+    String NAME_VALID = "^.{2,30}$";
     String DOUBLE_VALID = "^\\d+(\\.\\d+)?$";
     String INTEGER_VALID = "\\d+";
     String PHONE_VALID = "^(03[2-9]|07[06-9]|08[1-9]|09[0-9])\\d{7}$";
