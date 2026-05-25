@@ -41,4 +41,31 @@ public class Inputter {
         } while (more);
         return result.trim();
     }
+
+    /**
+     * Nhập có giới hạn 3 lần. Nếu sai quá 3 lần hỏi Y thử lại, N quay home.
+     * Trả về null nếu người dùng chọn quay về home.
+     */
+    public String inputWithRetryLimit(String mess, String pattern) {
+        while (true) {
+            int attempts = 0;
+            String result = "";
+            while (attempts < 3) {
+                result = getString(mess);
+                if (Acceptable.isValid(result, pattern)) {
+                    return result.trim();
+                }
+                attempts++;
+                int remaining = 3 - attempts;
+                if (remaining > 0) {
+                    System.out.println("Data is invalid! You have " + remaining + " attempt(s) left.");
+                }
+            }
+            System.out.println("You have entered invalid data 3 times.");
+            String ans = getString("Press Y to try again, or N to return to Home: ").trim();
+            if (!ans.equalsIgnoreCase("Y")) {
+                return null;
+            }
+        }
+    }
 }

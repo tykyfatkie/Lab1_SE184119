@@ -13,9 +13,13 @@ public class AddRegistration {
     public static void execute(Inputter ndl, Students rl, Mountains mountains) {
         System.out.println("\n--- New Registration ---");
 
+        // Student ID
         String id;
         while (true) {
-            id = ndl.inputAndLoop("Student ID (e.g. SE123456): ", Acceptable.STU_ID_VALID).toUpperCase();
+            id = ndl.inputWithRetryLimit("Student ID (e.g. SE123456): ", Acceptable.STU_ID_VALID);
+            if (id == null)
+                return;
+            id = id.toUpperCase();
             if (rl.searchById(id) != null) {
                 System.out.println("Student ID already exists. Please enter a different ID.");
             } else {
@@ -23,10 +27,22 @@ public class AddRegistration {
             }
         }
 
-        String name = ndl.inputAndLoop("Name [2-20 chars]: ", Acceptable.NAME_VALID);
-        String phone = ndl.inputAndLoop("Phone number [10 digits]: ", Acceptable.PHONE_VALID);
-        String email = ndl.inputAndLoop("Email address: ", Acceptable.EMAIL_VALID);
+        // Name
+        String name = ndl.inputWithRetryLimit("Name [2-20 chars]: ", Acceptable.NAME_VALID);
+        if (name == null)
+            return;
 
+        // Phone
+        String phone = ndl.inputWithRetryLimit("Phone number [10 digits]: ", Acceptable.PHONE_VALID);
+        if (phone == null)
+            return;
+
+        // Email — bắt buộc @fpt.edu.vn
+        String email = ndl.inputWithRetryLimit("Email address (@fpt.edu.vn): ", Acceptable.EMAIL_FPT_VALID);
+        if (email == null)
+            return;
+
+        // Mountain code
         mountains.showAll();
         String mountainCode;
         while (true) {
@@ -36,6 +52,7 @@ public class AddRegistration {
             System.out.println("Invalid mountain code. Please enter a code from the list.");
         }
 
+        // Tính phí
         double fee = BASE_FEE;
         if (Acceptable.isValid(phone, Acceptable.VIETTEL_VALID) || Acceptable.isValid(phone, Acceptable.VNPT_VALID)) {
             fee = BASE_FEE * (1 - DISCOUNT_RATE);

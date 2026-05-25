@@ -7,10 +7,6 @@ import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-/**
- * Class Students quản lý danh sách đăng ký leo núi.
- * Kế thừa từ ArrayList để tận dụng các phương thức có sẵn.
- */
 public class Students extends ArrayList<Student> {
     private final String pathFile;
     private boolean isSaved;
