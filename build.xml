@@ -1,73 +1,73 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!-- You may freely edit this file. See commented blocks below for -->
-<!-- some examples of how to customize the build. -->
-<!-- (If you delete it and reopen the project it will be recreated.) -->
-<!-- By default, only the Clean and Build commands use this build script. -->
-<!-- Commands such as Run, Debug, and Test only use this build script if -->
-<!-- the Compile on Save feature is turned off for the project. -->
-<!-- You can turn off the Compile on Save (or Deploy on Save) setting -->
-<!-- in the project's Project Properties dialog box.-->
-<project name="lab211_lab1_se184119" default="default" basedir=".">
-    <description>Builds, tests, and runs the project lab211_lab1_se184119.</description>
-    <import file="nbproject/build-impl.xml"/>
-    <!--
+<project name="lab211_lab1_se184119" default="run" basedir=".">
+    <description>Java Ant Application - lab211_lab1_se184119 (JDK 8)</description>
 
-    There exist several targets which are by default empty and which can be 
-    used for execution of your tasks. These targets are usually executed 
-    before and after some main targets. They are: 
+    <!-- ===================== PROPERTIES ===================== -->
+    <property name="src.dir"         value="src"/>
+    <property name="build.dir"       value="build"/>
+    <property name="classes.dir"     value="${build.dir}/classes"/>
+    <property name="dist.dir"        value="dist"/>
+    <property name="dist.jar"        value="${dist.dir}/lab211_lab1_se184119.jar"/>
+    <property name="main.class"      value="dispatcher.Main"/>
+    <property name="source.encoding" value="UTF-8"/>
+    <property name="javac.source"    value="1.8"/>
+    <property name="javac.target"    value="1.8"/>
 
-      -pre-init:                 called before initialization of project properties
-      -post-init:                called after initialization of project properties
-      -pre-compile:              called before javac compilation
-      -post-compile:             called after javac compilation
-      -pre-compile-single:       called before javac compilation of single file
-      -post-compile-single:      called after javac compilation of single file
-      -pre-compile-test:         called before javac compilation of JUnit tests
-      -post-compile-test:        called after javac compilation of JUnit tests
-      -pre-compile-test-single:  called before javac compilation of single JUnit test
-      -post-compile-test-single: called after javac compilation of single JUunit test
-      -pre-jar:                  called before JAR building
-      -post-jar:                 called after JAR building
-      -post-clean:               called after cleaning build products
+    <!-- ===================== INIT ===================== -->
+    <target name="init" description="Create build directories">
+        <mkdir dir="${classes.dir}"/>
+        <mkdir dir="${dist.dir}"/>
+    </target>
 
-    (Targets beginning with '-' are not intended to be called on their own.)
+    <!-- ===================== COMPILE ===================== -->
+    <target name="compile" depends="init" description="Compile Java sources">
+        <javac
+            srcdir="${src.dir}"
+            destdir="${classes.dir}"
+            source="${javac.source}"
+            target="${javac.target}"
+            encoding="${source.encoding}"
+            includeantruntime="false"
+            debug="true">
+            <compilerarg value="-Xlint:unchecked"/>
+        </javac>
+        <!-- Copy resource files (csv, dat) from src to classes -->
+        <copy todir="${classes.dir}">
+            <fileset dir="${src.dir}" excludes="**/*.java,**/out/**"/>
+        </copy>
+    </target>
 
-    Example of inserting an obfuscator after compilation could look like this:
+    <!-- ===================== JAR ===================== -->
+    <target name="jar" depends="compile" description="Build executable JAR">
+        <jar destfile="${dist.jar}" basedir="${classes.dir}">
+            <manifest>
+                <attribute name="Main-Class" value="${main.class}"/>
+                <attribute name="Class-Path" value="."/>
+            </manifest>
+        </jar>
+        <echo>JAR built: ${dist.jar}</echo>
+    </target>
 
-        <target name="-post-compile">
-            <obfuscate>
-                <fileset dir="${build.classes.dir}"/>
-            </obfuscate>
-        </target>
+    <!-- ===================== RUN ===================== -->
+    <target name="run" depends="jar" description="Run the application">
+        <java jar="${dist.jar}" fork="true" dir="${classes.dir}">
+            <arg value=""/>
+        </java>
+    </target>
 
-    For list of available properties check the imported 
-    nbproject/build-impl.xml file. 
+    <!-- ===================== RUN WITHOUT JAR ===================== -->
+    <target name="run-classes" depends="compile" description="Run directly from classes">
+        <java classname="${main.class}" classpath="${classes.dir}" fork="true" dir="${classes.dir}"/>
+    </target>
 
+    <!-- ===================== CLEAN ===================== -->
+    <target name="clean" description="Delete build and dist directories">
+        <delete dir="${build.dir}"/>
+        <delete dir="${dist.dir}"/>
+        <echo>Cleaned build artifacts.</echo>
+    </target>
 
-    Another way to customize the build is by overriding existing main targets.
-    The targets of interest are: 
+    <!-- ===================== REBUILD ===================== -->
+    <target name="rebuild" depends="clean,jar" description="Clean then build"/>
 
-      -init-macrodef-javac:     defines macro for javac compilation
-      -init-macrodef-junit:     defines macro for junit execution
-      -init-macrodef-debug:     defines macro for class debugging
-      -init-macrodef-java:      defines macro for class execution
-      -do-jar:                  JAR building
-      run:                      execution of project 
-      -javadoc-build:           Javadoc generation
-      test-report:              JUnit report generation
-
-    An example of overriding the target for project execution could look like this:
-
-        <target name="run" depends="lab211_lab1_se184119-impl.jar">
-            <exec dir="bin" executable="launcher.exe">
-                <arg file="${dist.jar}"/>
-            </exec>
-        </target>
-
-    Notice that the overridden target depends on the jar target and not only on 
-    the compile target as the regular run target does. Again, for a list of available 
-    properties which you can use, check the target you are overriding in the
-    nbproject/build-impl.xml file. 
-
-    -->
 </project>
